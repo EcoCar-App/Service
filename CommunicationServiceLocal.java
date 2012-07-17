@@ -7,15 +7,19 @@ import android.content.Intent;
 import android.os.IBinder;
 
 public class CommunicationServiceLocal extends Service{
-	static final int HEADER_LENGTH = 4;
-	static Node data;
-	static Hashtable commands = new Hashtable();
-	//Hashtable in dem die Knoten zugeordnet, wobei jede Zuordnung
-	//eine Hashtable mit Attributen enth�lt
-	//Dabei ist f�r den Index 0 immer der Name des Knotens gemeint
-	static Hashtable structure = new Hashtable();
-	static Hashtable datatype = new Hashtable();
+	
+	static final int HEADER_LENGTH = 4;		//Laenge des Headers
+	
+	static Node data;						//Wurzel des Datenbaums
+	
+	static Hashtable commands;				//Hashtable mit den Befehlen
+	
+	static Hashtable structure;				//Pfadsortierte Datenstruktur
+	
+	static Hashtable datatype;				//Identifikation der Datentypen
 
+	
+	
 	private String getNodeName(byte [] path){
 		Hashtable attribute = (Hashtable) structure.get(Arrays.toString(path));
 		return (String) attribute.get("[0]");
@@ -25,10 +29,9 @@ public class CommunicationServiceLocal extends Service{
 		return (String) commands.get(Arrays.toString(cmd));
 	}
 
+	/*+++++++++++++++INITIALIZE+++++++++++++++++*/
 
 	//Initialisieren der Hashtable anhand der Excel-Tabelle
-
-
 	private void initTable(){
 
 	}
@@ -63,7 +66,8 @@ public class CommunicationServiceLocal extends Service{
 	private void initializeValue(){
 
 	}
-	//Verbindungsaufbau mit dem ausgew�hltem Kanal
+	
+	//Verbindungsaufbau mit dem ausgewaehltem Kanal
 	public void connect(String chanel){
 	}
 
