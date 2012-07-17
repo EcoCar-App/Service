@@ -2,24 +2,26 @@ package com.example.communicationservice;
 
 import java.util.*;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+@SuppressLint("NewApi")
 public class CommunicationServiceLocal extends Service{
-	
+
 	static final int HEADER_LENGTH = 4;		//Laenge des Headers
-	
+
 	static Node data;						//Wurzel des Datenbaums
-	
+
 	static Hashtable commands;				//Hashtable mit den Befehlen
-	
+
 	static Hashtable structure;				//Pfadsortierte Datenstruktur
-	
+
 	static Hashtable datatype;				//Identifikation der Datentypen
 
-	
-	
+
+
 	private String getNodeName(byte [] path){
 		Hashtable attribute = (Hashtable) structure.get(Arrays.toString(path));
 		return (String) attribute.get("[0]");
@@ -56,6 +58,7 @@ public class CommunicationServiceLocal extends Service{
 			initializeNode(Arrays.copyOfRange(input, 0, input[i]));
 		}
 	}
+
 	private void initializeNode(byte [] input){
 		int type = input [1];
 		int depth = input [2];
@@ -66,7 +69,7 @@ public class CommunicationServiceLocal extends Service{
 	private void initializeValue(){
 
 	}
-	
+
 	//Verbindungsaufbau mit dem ausgewaehltem Kanal
 	public void connect(String chanel){
 	}
@@ -99,7 +102,6 @@ public class CommunicationServiceLocal extends Service{
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
