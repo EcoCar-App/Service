@@ -4,10 +4,15 @@ import java.util.*;
 public class Value{
 
 	private byte id;			//ID des Attributs
+	
 	private String name;		//Name des Attributs
+	
 	private Date time;			//mšglicher Zeitstempel
+	
 	private Object value;		//Object in dem der entpr. Datentyp gespeichert wird
+	
 	private Value next;			//Zeiger auf den naechsten Wert
+	
 	private Node father;		//Zeiger auf Vaterknoten
 
 	
@@ -87,6 +92,9 @@ public class Value{
 	//erzeugt das GET-Protokoll fuer ein Object Value
 	public byte [] refresh(){
 		
+		
+		//relativ schlampiger Code
+		//wird noch "eleganter"
 		byte [] path = father.getPath();
 		byte depth = (byte) path.length;
 		byte command = (byte) 2; //muss noch ermittelt werden
@@ -107,7 +115,6 @@ public class Value{
 				}else{
 					commandSet[i] = this.id;
 				}
-				
 			}
 		}
 		return commandSet.clone();
@@ -116,6 +123,7 @@ public class Value{
 	
 	/*+++++++++++++++ADD_METHODEN++++++++++++++++++++++*/
 
+	//Oberste Add-Methode: ruft die entspr. Methode auf
 	private void add(byte type, byte[] path, byte id) {
 
 		switch(type){
