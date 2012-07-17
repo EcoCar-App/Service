@@ -11,10 +11,9 @@ public class CommunicationServiceLocal extends Service{
 	static Node data = new Node();
 	static Hashtable commands = new Hashtable();
 	//Hashtable in dem die Knoten zugeordnet, wobei jede Zuordnung
-	//eine Hashtable mit Attributen enthŠlt
-	//Dabei ist fŸr den Index 0 immer der Name des Knotens gemeint
+	//eine Hashtable mit Attributen enthï¿½lt
+	//Dabei ist fï¿½r den Index 0 immer der Name des Knotens gemeint
 	static Hashtable structure = new Hashtable();
-	//Hashtable fŸr den Datentyp. 255 Werte reichen
 	static Hashtable datatype = new Hashtable();
 
 	private String getNodeName(byte [] path){
@@ -64,7 +63,7 @@ public class CommunicationServiceLocal extends Service{
 	private void initializeValue(){
 
 	}
-	//Verbindungsaufbau mit dem ausgewŠhltem Kanal
+	//Verbindungsaufbau mit dem ausgewï¿½hltem Kanal
 	public void connect(String chanel){
 	}
 
