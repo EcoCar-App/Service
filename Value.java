@@ -56,18 +56,29 @@ public class Value{
 	
 	
 	/*+++++++++++++++SEARCH_METHODEN+++++++++++++++*/
-
+	
+	//sucht in der Liste das passende Object zur ID
 	private Value searchValue(byte id){
-		return null;
-	}
-
-	private Value lastPointer(Value values){
-		return null;
+		Value current = this;
+		while(current != null){
+			if(current.id == id){
+				return current;
+			}
+			current = current.next;
+		}
+		//noValueException
+		return current;
 	}
 	
-	private Value getLastValue() {
-		return null;
+	//sucht den letzten Zeiger in der Liste
+	private Value lastPointer(Value values){
+		Value current = this;
+		while(current != null){
+			current = current.next;
+		}
+		return current;
 	}
+	
 
 	
 	/*+++++++++++++++++REFRESH+++++++++++++++++++*/
