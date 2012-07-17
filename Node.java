@@ -1,18 +1,24 @@
 package com.example.communicationservice;
 import java.util.*;
+
 public class Node {
+
+	private String name;			//Name der Fahrzeugkomponente
 	
+	private byte id;				//Zugehörige Byte der Komponente
 	
+	private byte [] path;			//Pfad im Baum
 	
-	private String name;
-	private byte id;
-	private byte [] path;
-	private static int counter = 1;
-	private Node previous;
-	private Node nextDirectory;	//Zeiger auf Knoten der nächsten Ebene
-	private Node sameDirectory;	//Zeiger auf Knoten der selben Ebene
-	//evtl auch Hashtable
-	private Value values;	//Zeiger auf Values
+	private Node previous;			//Zeiger auf den vorherigen Knoten
+									//nicht zwingend notwendig: unklar
+	private Node nextDirectory;		//Zeiger auf Knoten der nächsten Ebene
+	
+	private Node sameDirectory;		//Zeiger auf Knoten der selben Ebene
+	
+	private Value values;			//Zeiger auf Liste an Values
+									//evtl auch als Hashtable möglich: unklar
+	
+	private static int counter = 1;	//Counter Namensgebung z.B. Akuzelle10
 	
 	
 	/*+++++++++++++++Konstruktoren++++++++++++++++++++++*/
