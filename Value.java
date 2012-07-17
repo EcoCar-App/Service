@@ -3,12 +3,15 @@ import java.util.*;
 
 public class Value{
 
-	byte id;
-	String name;
-	Date zeitstempel;
-	Object value;
-	Value next;
-	Node vather;
+	private byte id;
+	private String name;
+	private Date zeitstempel;
+	private Object value;
+	private Value next;
+	private Node father;
+
+	
+	/*+++++++++++++++Konstruktoren++++++++++++++++++++++*/
 
 	public Value(){
 
@@ -25,10 +28,31 @@ public class Value{
 
 	}
 
+	/*+++++++++++++++GET_METHODEN++++++++++++++++++++++*/
+
 	public byte getID(){
 		return this.id;
 	}
-
+	
+	public String getName(){
+		return this.name;
+	}
+	
+	public Date getTime(){
+		return this.zeitstempel;
+	}
+	
+	public Object getValue(){
+		return this.value;
+	}
+	
+	public Value getNext(){
+		return this.next;
+	}
+	
+	public Node getFather(){
+		return this.father;
+	}
 	private Value searchValue(byte id){
 		return null;
 	}
@@ -39,7 +63,7 @@ public class Value{
 
 	public byte [] refresh(){
 		
-		byte [] path = vather.getPath();
+		byte [] path = father.getPath();
 		byte depth = (byte) path.length;
 		byte command = (byte) 2; //muss noch ermittelt werden
 		byte length = (byte) (depth + (byte) 4);
