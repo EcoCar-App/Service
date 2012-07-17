@@ -5,42 +5,42 @@ public class Node {
 
 	private String name;			//Name der Fahrzeugkomponente
 	
-	private byte id;				//Zugehörige Byte der Komponente
+	private byte id;			//Zugehoerige Byte der Komponente
 	
 	private byte [] path;			//Pfad im Baum
 	
 	private Node previous;			//Zeiger auf den vorherigen Knoten
-									//nicht zwingend notwendig: unklar
-	private Node nextDirectory;		//Zeiger auf Knoten der nächsten Ebene
+						//nicht zwingend notwendig: unklar
+	private Node nextDirectory;		//Zeiger auf Knoten der naechsten Ebene
 	
 	private Node sameDirectory;		//Zeiger auf Knoten der selben Ebene
 	
 	private Value values;			//Zeiger auf Liste an Values
-									//evtl auch als Hashtable möglich: unklar
+						//evtl auch als Hashtable möglich: unklar
 	
-	private static int counter = 1;	//Counter Namensgebung z.B. Akuzelle10
+        private static int counter = 1;	        //Counter Namensgebung z.B. Akuzelle10
 	
 	
 	/*+++++++++++++++Konstruktoren++++++++++++++++++++++*/
+	
 	//Standardkonstruktor
+	//wird in der regel nicht aufgerufen
 	public Node(){
-		this.id = 0;
-		this.name = "head";
-		this.path = null;
-		
+		this((byte)0, new byte [] {0}, "unknown");		
 	}
 	
 	//Konstruktor Name unbekannt
-	public Node(byte id, byte [] path, String name){
+	//im Falle das der Pfad in der Hashtable fehlt
+	public Node(byte id, byte [] path){
 		this.id = id;
 		this.path = path;
 		Node previous = this.getPrevious();
-		this.name = "unknown_component_of_" + previous.name +counter;
-		counter++;
+		String name = "unknown_component_of_" + previous.name +counter;
+		
 	}
 	
 	//Konstruktor Name bekannt
-	public Node(byte id, byte depth, byte [] path, String name){
+	public Node(byte id, byte [] path, String name){
 		this.id = id;
 		this.path = path;
 	}
@@ -74,6 +74,32 @@ public class Node {
 	
 	private Value getValues(){
 		return this.values;
+	}
+	
+	/*+++++++++++++++SET_METHODEN++++++++++++++++++++++*/
+
+	//setzt Namen des Attributs inkl. einer Nummerierung bei Doppelbelegung
+	private void setName(String name){
+		int counter = 2;
+		while(previous.nameExist(name)){
+			name += counter;
+			counter++;
+		}
+		this.name = name;
+		
+	}
+	
+	//ueberprueft, ob der Name in der Directory schon verhanden ist
+	private boolean nameExist(String name){
+		Node current = previous.nextDirectory;
+		
+		while(current.sameDirectory != null){
+			if(name.equals(current.name)){
+				return true;
+			}
+			current = current.sameDirectory;
+		}
+		return false;
 	}
 	
 	

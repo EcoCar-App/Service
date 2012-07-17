@@ -8,7 +8,7 @@ import android.os.IBinder;
 
 public class CommunicationServiceLocal extends Service{
 	static final int HEADER_LENGTH = 4;
-	static Node data = new Node();
+	static Node data;
 	static Hashtable commands = new Hashtable();
 	//Hashtable in dem die Knoten zugeordnet, wobei jede Zuordnung
 	//eine Hashtable mit Attributen enth�lt
