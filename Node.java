@@ -44,11 +44,11 @@ public class Node {
 
 	/*+++++++++++++++GET_METHODEN++++++++++++++++++++++*/
 
-	private String getName(){
+	public String getName(){
 		return this.name;
 	}
 
-	private byte getID(){
+	public byte getID(){
 		return this.id;
 	}
 
@@ -63,12 +63,12 @@ public class Node {
 	}
 
 	//gibt die Liste der Knoten mit gleichem Vaterknoten zurueck
-	private Node getNodeList(){
+	public Node getNodeList(){
 		return this.sameDirectory;
 	}
 
 	//gibt die naechsten freien Kindknoten zurueck
-	private Node getFreeChildNode(){
+	public Node getFreeChildNode(){
 		Node current = this.nextDirectory;
 		while(current != null){
 			current = current.sameDirectory;
@@ -77,12 +77,12 @@ public class Node {
 	}
 
 	//gibt den Vaterknoten zurueck
-	private Node getPrevious(){
+	public Node getPrevious(){
 		return this.previous;
 	}
 
 	//gibt die Liste der Werte zurueck
-	private Value getValues(){
+	public Value getValues(){
 		return this.values;
 	}
 
