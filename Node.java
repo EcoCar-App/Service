@@ -131,10 +131,6 @@ public class Node {
 	/*+++++++++++++++PREVIOUS_METHODEN+++++++++++++*/
 
 
-
-
-
-
 	/*+++++++++++++++SEARCH_METHODEN+++++++++++++++++*/
 
 	//sucht den passenden Kindknoten anhand der ID

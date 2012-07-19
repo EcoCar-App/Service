@@ -91,13 +91,8 @@ public class CommunicationServiceLocal extends Service{
 	//File Abholen
 	public String collectInput(){
 
-		return "Stream";
+		return "Input";
 	}
-
-
-
-
-
 
 
 	@Override

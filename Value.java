@@ -132,6 +132,7 @@ public class Value{
 	}
 	//fuer jeden Datentyp wird die enspr. Methode aufgerufen
 	//bisher nur primitve Datentypen
+	//Inittialisieru2ng muss ueberarbeitet werden
 	private void addBoolean(byte id, String name) {
 		this.next = new Value(id, name, new Boolean(null));
 
