@@ -7,7 +7,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-@SuppressLint("NewApi")
 public class CommunicationServiceLocal extends Service{
 
 	static final int HEADER_LENGTH = 4;		//Laenge des Headers
@@ -23,6 +22,9 @@ public class CommunicationServiceLocal extends Service{
 
 
 	private String getNodeName(byte [] path){
+		//Die Hashtable "structure" beinhaltet alle Knoten nach Pfad sortiert.
+		//Die Knoten werden als Hashtables representiert, wobei
+		//Key = 0 den Namen des Knoten entspricht.
 		Hashtable attribute = (Hashtable) structure.get(Arrays.toString(path));
 		return (String) attribute.get("[0]");
 	}
@@ -35,6 +37,7 @@ public class CommunicationServiceLocal extends Service{
 
 	//Initialisieren der Hashtable anhand der Excel-Tabelle
 	private void initTable(){
+		
 
 	}
 
