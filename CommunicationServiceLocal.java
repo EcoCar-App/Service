@@ -149,11 +149,26 @@ public class CommunicationServiceLocal extends Service{
 			TableObject value = (TableObject) values.get(input[i]);
 			name = value.name;
 			type = value.datatype;
-			current.values.add(type, id, name);
+			current.addValue(type, id, name);
 		}
 
 	}
 	
+	/*+++++++++++++++++++++++++++REFRESH_METHODE+++++++++++++++++++++++++++++*/
+
+	private void refreshNode(byte [] path){
+		Node current = this.getNode(path);
+		Vector command = current.refresh();
+		byte [] commandArray = new byte [command.size()];
+		for(int i = 0; i < command.size(); i++){
+			String z = (String) command.get(i);
+			byte [] y = z.getBytes();
+		}
+	}
+	
+	private void refreshValue(byte [] path, byte id){
+		
+	}
 	
 	/*+++++++++++++++++++++++++++++++TODO++++++++++++++++++++++++++++++++++++*/
 

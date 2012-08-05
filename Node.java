@@ -86,6 +86,13 @@ public class Node {
 		return this.values;
 	}
 
+	public Value getLastValue(){
+		Value current = values;
+		while(current != null){
+			current = current.getNext();
+		}
+		return current;
+	}
 	/*+++++++++++++++SET_METHODEN++++++++++++++++++++++*/
 
 	//setzt Namen des Attributs inkl. einer Nummerierung bei Doppelbelegung
@@ -120,7 +127,10 @@ public class Node {
 		current = new Node(id, path, name, this);
 	}
 
-
+	public void addValue(byte type, byte id, String name){
+		Value newValue = getLastValue();
+		newValue.add(type, id, name, this);
+	}
 	/*+++++++++++++++REMOVE_METHODE++++++++++++++++++++++*/
 
 	//entfernt den Knoten und alle Kondknoten (nicht notwendig)

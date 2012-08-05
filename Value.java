@@ -1,4 +1,5 @@
 package com.example.communicationservice;
+import android.annotation.SuppressLint;
 import java.util.*;
 
 public class Value{
@@ -21,14 +22,15 @@ public class Value{
 	public Value(){
 
 	}
-	public Value(byte id, String name, Object value){
+	public Value(byte id, String name, Object value, Node father){
 		this.id = id;
 		this.name = name;
 		this.value = value;
+		this.father = father;
 	}
 
-	public Value(byte id, String name, Object value, Date zeitstempel){
-		this(id, name, value);
+	public Value(byte id, String name, Object value, Node father, Date zeitstempel){
+		this(id, name, value, father);
 		this.time = zeitstempel;
 
 	}
@@ -58,6 +60,8 @@ public class Value{
 	public Node getFather(){
 		return this.father;
 	}
+	
+	
 	
 	
 	/*+++++++++++++++SEARCH_METHODEN+++++++++++++++*/
@@ -114,28 +118,28 @@ public class Value{
 	/*+++++++++++++++ADD_METHODEN++++++++++++++++++++++*/
 
 	//Oberste Add-Methode: ruft die entspr. Methode auf
-	public void add(byte type, byte id, String name) {
-		if(!(this.next == null && this.father != null)){
+	public void add(byte type, byte id, String name, Node father) {
+		if(this != null){
 			//throw Exception
 		}
-		String typeName = (String) CommunicationServiceLocal.datatype.get(type);
+		
 		switch(type){
 		case CommunicationServiceLocal.BOOLEAN:
-			addBoolean(id, name);
+			addBoolean(id, name, father);
 		case CommunicationServiceLocal.BYTE:
-			addByte(id, name);
+			addByte(id, name, father);
 		case CommunicationServiceLocal.CHAR:
-			addChar(id, name);
+			addChar(id, name, father);
 		case CommunicationServiceLocal.DOUBLE:
-			addDouble(id, name);
+			addDouble(id, name, father);
 		case CommunicationServiceLocal.FLOAT:
-			addFloat(id, name);
+			addFloat(id, name, father);
 		case CommunicationServiceLocal.INTEGER:
-			addInteger(id, name);
+			addInteger(id, name, father);
 		case CommunicationServiceLocal.LONG:
-			addLong(id, name);
+			addLong(id, name, father);
 		case CommunicationServiceLocal.SHORT:
-			addShort(id,name);
+			addShort(id,name, father);
 		default:
 			//throw Exception...
 			
@@ -145,36 +149,44 @@ public class Value{
 	//fuer jeden Datentyp wird die enspr. Methode aufgerufen
 	//bisher nur primitve Datentypen
 	//Inittialisieru2ng muss ueberarbeitet werden
-	private void addBoolean(byte id, String name) {
-		this.next = new Value(id, name, new Boolean(null));
-
+	private void addBoolean(byte id, String name, Node father) {
+		Value newValue = this;
+		newValue = new Value(id, name, new Boolean(null), father);
+		
 	}
-	private void addByte(byte id, String name) {
-		this.next = new Value(id, name, new Byte(null));
+	private void addByte(byte id, String name, Node father) {
+		Value newValue = this;
+		newValue = new Value(id, name, new Byte(null), father);
 	}
 	
-	private void addChar(byte id, String name){
+	private void addChar(byte id, String name, Node father){
+		Value newValue = this;
 		char value = 0;
-		this.next = new Value(id, name, value);
+		newValue = new Value(id, name, value, father);
 	}
 	
-	private void addDouble(byte id, String name){
-		this.next = new Value(id, name, new Double(null));
+	private void addDouble(byte id, String name, Node father){
+		Value newValue = this;
+		newValue = new Value(id, name, new Double(null), father);
 	}
 	
-	private void addFloat(byte id, String name){
-		this.next = new Value(id, name, new Float(null));
+	private void addFloat(byte id, String name, Node father){
+		Value newValue = this;
+		newValue = new Value(id, name, new Float(null), father);
 	}
 	
-	private void addInteger(byte id, String name){
-		this.next = new Value(id, name, new Integer(null));
+	private void addInteger(byte id, String name, Node father){
+		Value newValue = this;
+		newValue = new Value(id, name, new Integer(null), father);
 	}
 
-	private void addLong(byte id, String name){
-		this.next = new Value(id, name, new Long(null));
+	private void addLong(byte id, String name, Node father){
+		Value newValue = this;
+		newValue = new Value(id, name, new Long(null), father);
 	}
-	private void addShort(byte id, String name){
-		this.next = new Value(id, name, new Short(null));
+	private void addShort(byte id, String name, Node father){
+		Value newValue = this;
+		newValue = new Value(id, name, new Short(null), father);
 	}
 
 }
