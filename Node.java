@@ -115,7 +115,7 @@ public class Node {
 	/*+++++++++++++++ADD_METHODE++++++++++++++++++++++*/
 
 	//fuegt einen Kindknoten hinzu
-	private void add(byte [] path, byte id, String name){	
+	public void add(byte [] path, byte id, String name){	
 		Node current = this.getFreeChildNode();
 		current = new Node(id, path, name, this);
 	}
@@ -134,7 +134,7 @@ public class Node {
 	/*+++++++++++++++SEARCH_METHODEN+++++++++++++++++*/
 
 	//sucht den passenden Kindknoten anhand der ID
-	private Node getNextNode(byte id){
+	public Node getNextNode(byte id){
 		Node current = this.nextDirectory;
 
 		while(current != null){
