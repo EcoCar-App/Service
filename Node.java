@@ -15,7 +15,7 @@ public class Node {
 
 	private Node sameDirectory;		//Zeiger auf Knoten der selben Ebene
 
-	private Value values = new Value();			//Zeiger auf Liste an Values
+	public Value values = new Value();			//Zeiger auf Liste an Values
 	//evtl auch als Hashtable moeglich: unklar
 
 

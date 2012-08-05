@@ -124,10 +124,30 @@ public class Value{
 	/*+++++++++++++++ADD_METHODEN++++++++++++++++++++++*/
 
 	//Oberste Add-Methode: ruft die entspr. Methode auf
-	private void add(byte type, byte[] path, byte id) {
-
-		switch(type){
+	public void add(byte type, byte id, String name) {
 		
+		String typeName = (String) CommunicationServiceLocal.datatype.get(type);
+		switch(type){
+		case CommunicationServiceLocal.BOOLEAN:
+			addBoolean(id, name);
+		case CommunicationServiceLocal.BYTE:
+			addByte(id, name);
+		case CommunicationServiceLocal.CHAR:
+			addChar(id, name);
+		case CommunicationServiceLocal.DOUBLE:
+			addDouble(id, name);
+		case CommunicationServiceLocal.FLOAT:
+			addFloat(id, name);
+		case CommunicationServiceLocal.INTEGER:
+			addInteger(id, name);
+		case CommunicationServiceLocal.LONG:
+			addLong(id, name);
+		case CommunicationServiceLocal.SHORT:
+			addShort(id,name);
+		default:
+			//throw Exception...
+			
+			
 		}
 	}
 	//fuer jeden Datentyp wird die enspr. Methode aufgerufen
