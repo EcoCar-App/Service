@@ -80,6 +80,7 @@ public class CommunicationServiceLocal extends Service{
 	/*+++++++++++++++++++++++++INITIALIZE_HASHTABLE++++++++++++++++++++++++++*/
 
 	//Initialisieren der Hashtable anhand der Excel-Tabelle
+	
 	private void initTable(){
 	}
 
@@ -87,9 +88,9 @@ public class CommunicationServiceLocal extends Service{
 	private void initTable(byte [] prefix){
 	}
 
-	//Initialisieren der im Fahrzeug vorhandenen Daten
-
 	/*+++++++++++++++++++++++++++INITIALIZE_DATA+++++++++++++++++++++++++++++*/
+	
+	//Initialisieren der im Fahrzeug vorhandenen Daten
 
 	private void initialize(){
 
@@ -112,6 +113,7 @@ public class CommunicationServiceLocal extends Service{
 		}
 	}
 
+	
 	private void initializeNode(byte [] input){
 		byte length = input [0];
 		byte type = input [1];
@@ -120,16 +122,14 @@ public class CommunicationServiceLocal extends Service{
 		String name;
 		byte [] path = Arrays.copyOfRange(input, 3, 3+depth);
 		Node current = getNode(path);
-		
 		Hashtable values = (Hashtable) structure.get(Arrays.toString(path));
+		
 		for(int i = 3 + depth; i < input.length; i++){
 			id = input [i];
 			TableObject father = (TableObject) values.get("[0]");
 			name = father.name;
 			current.add(path, id, name);
 		}
-		
-		
 	}
 	
 	
@@ -142,12 +142,13 @@ public class CommunicationServiceLocal extends Service{
 		String name;
 		byte [] path = Arrays.copyOfRange(input, 3, 3+depth);
 		Node current = getNode(path);
-		
 		Hashtable values = (Hashtable) structure.get(Arrays.toString(path));
+		
 		for(int i = 3 + depth; i < input.length; i++){
 			id = input [i];
 			TableObject value = (TableObject) values.get(input[i]);
 			name = value.name;
+			type = value.datatype;
 			current.values.add(type, id, name);
 		}
 

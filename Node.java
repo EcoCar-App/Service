@@ -15,7 +15,7 @@ public class Node {
 
 	private Node sameDirectory;		//Zeiger auf Knoten der selben Ebene
 
-	public Value values = new Value();			//Zeiger auf Liste an Values
+	public Value values;			//Zeiger auf Liste an Values
 	//evtl auch als Hashtable moeglich: unklar
 
 
@@ -153,20 +153,30 @@ public class Node {
 
 	//TODO: saemtliche Values des aktuellen und der UnterKnoten werden rekursiv aktuallisiert
 	//Das Feld mit pfad und Befehl wird zurückgegeben
-	private byte [] refresh(){
-		return null;
-	}
-
-	private byte [] refreshValues(){
-		Value current = this.values;
+	public Vector refresh(){
+		Value currentValue = values;
 		
-		while(current != null){
-			byte [] commandField = current.refresh();
-
+		Vector commandSet = new Vector();
+		
+		while(currentValue != null){
+			commandSet.add(refresh(currentValue));
+			currentValue = currentValue.getNext();
 		}
-		
+		commandSet.add(refresh(this));
 		return null;
-
+	}
+	
+	private Vector refresh(Value value){
+		return value.refresh();
 	}
 
+	private Vector refresh(Node node){
+		Node current = node.nextDirectory;
+		Vector commandLine = new Vector();
+		while(current != null){
+			commandLine.add(current.refresh());
+			current = current.sameDirectory;
+		}
+		return commandLine;
+	}
 }

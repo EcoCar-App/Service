@@ -76,7 +76,7 @@ public class Value{
 	}
 	
 	//sucht den letzten Zeiger in der Liste
-	private Value lastPointer(Value values){
+	private Value lastPointer(){
 		Value current = this;
 		while(current != null){
 			current = current.next;
@@ -90,34 +90,24 @@ public class Value{
 
 	
 	//erzeugt das GET-Protokoll fuer ein Object Value
-	public byte [] refresh(){
+	public Vector refresh(){
 		
-		
-		//relativ schlampiger Code
-		//wird noch "eleganter"
 		byte [] path = father.getPath();
 		byte depth = (byte) path.length;
 		byte command = (byte) 2; //muss noch ermittelt werden
 		byte length = (byte) (depth + (byte) 4);
-		byte [] commandSet = new byte [length];
 		
-		for(int i = 0; i < commandSet.length; i++){
-			switch(i){
-			case 0: 
-				commandSet[i] = length;
-			case 1: 
-				commandSet[i] = command;
-			case 2: 
-				commandSet[i] = depth;
-			default: 
-				if(i != length-1){
-					commandSet[i] = path[i- 3];
-				}else{
-					commandSet[i] = this.id;
-				}
-			}
+		Vector commandLine = new Vector();
+		commandLine.add(length);
+		commandLine.add(command);
+		commandLine.add(depth);
+		
+		for(int i = 0; i < path.length; i++){
+			commandLine.add(path[i]);
 		}
-		return commandSet.clone();
+		commandLine.add(this.id);
+		
+		return commandLine;
 	}
 
 	
@@ -125,7 +115,9 @@ public class Value{
 
 	//Oberste Add-Methode: ruft die entspr. Methode auf
 	public void add(byte type, byte id, String name) {
-		
+		if(!(this.next == null && this.father != null)){
+			//throw Exception
+		}
 		String typeName = (String) CommunicationServiceLocal.datatype.get(type);
 		switch(type){
 		case CommunicationServiceLocal.BOOLEAN:
