@@ -19,7 +19,7 @@ public class Value{
 
 	private Object value;		//Object in dem der entpr. Datentyp gespeichert wird
 	
-	private Value head;			//Zeiger auf das erste Element der Liste
+	private static Value head;	//Zeiger auf das erste Element der Liste
 
 	private Value next;			//Zeiger auf den naechsten Wert
 	

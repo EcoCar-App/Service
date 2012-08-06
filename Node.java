@@ -5,18 +5,19 @@ public class Node {
 	
 	private byte [] path;			//Pfad im Baum
 
-	private byte id;			//Zugehoerige Byte der Komponente
+	private byte id;				//Zugehoerige Byte der Komponente
 
 	private String name;			//Name der Fahrzeugkomponente
 
 	private Node previous;			//Zeiger auf den vorherigen Knoten
-	//nicht zwingend notwendig: unklar
+
 	private Node nextDirectory;		//Zeiger auf Knoten der naechsten Ebene
 
 	private Node sameDirectory;		//Zeiger auf Knoten der selben Ebene
 
-	public Value values;			//Zeiger auf Liste an Values
-	//evtl auch als Hashtable moeglich: unklar
+	private Value values;			//Zeiger auf Liste an Values
+									//evtl auch als Hashtable moeglich: unklar
+	private static Node root;		//Wurzel des Datenbaums
 
 
 	/*+++++++++++++++++++++++++++++KONSTRUKTOREN+++++++++++++++++++++++++++++*/
@@ -24,17 +25,17 @@ public class Node {
 	//Standardkonstruktor
 	//wird in der regel nicht aufgerufen
 	public Node(){
-		this((byte)0, new byte [] {0}, "unknown", null);		
+		this(new byte [] {0}, (byte)0, "unknown", null);		
 	}
 
 	//Konstruktor Name unbekannt
 	//im Falle das der Pfad in der Hashtable fehlt
-	public Node(byte id, byte [] path, Node previous){
-		this(id, path, "unknown_component", previous);		
+	public Node(byte [] path, byte id, Node previous){
+		this(path, id, "unknown_component", previous);		
 	}
 
 	//Konstruktor Name bekannt, Previous wird mituebergeben
-	public Node(byte id, byte [] path, String name, Node previous){
+	public Node(byte [] path, byte id, String name, Node previous){
 		this.id = id;
 		this.path = path;
 		this.previous = previous;
@@ -44,16 +45,16 @@ public class Node {
 
 	/*++++++++++++++++++++++++++++++GET-METHODEN+++++++++++++++++++++++++++++*/
 
-	public String getName(){
-		return this.name;
+	public byte [] getPath(){
+		return this.path.clone();
 	}
-
+	
 	public byte getID(){
 		return this.id;
 	}
-
-	public byte [] getPath(){
-		return this.path.clone();
+	
+	public String getName(){
+		return this.name;
 	}
 
 
@@ -143,6 +144,10 @@ public class Node {
 		}
 		return false;
 	}
+	
+	public void setValue(byte id, byte [] input){
+		this.getValue(id).setValue(input);
+	}
 
 
 	/*++++++++++++++++++++++++++++++ADD-METHODEN+++++++++++++++++++++++++++++*/
@@ -150,7 +155,7 @@ public class Node {
 	//fuegt einen Kindknoten hinzu
 	public void add(byte [] path, byte id, String name){	
 		Node newNode = this.getEmptyChildNode();
-		newNode = new Node(id, path, name, this);
+		newNode = new Node(path, id, name, this);
 	}
 
 	public void addValue(byte type, byte id, String name){
