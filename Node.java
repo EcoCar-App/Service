@@ -2,12 +2,12 @@ package com.example.communicationservice;
 import java.util.*;
 
 public class Node {
-
-	private String name;			//Name der Fahrzeugkomponente
+	
+	private byte [] path;			//Pfad im Baum
 
 	private byte id;			//Zugehoerige Byte der Komponente
 
-	private byte [] path;			//Pfad im Baum
+	private String name;			//Name der Fahrzeugkomponente
 
 	private Node previous;			//Zeiger auf den vorherigen Knoten
 	//nicht zwingend notwendig: unklar
@@ -19,7 +19,7 @@ public class Node {
 	//evtl auch als Hashtable moeglich: unklar
 
 
-	/*+++++++++++++++Konstruktoren++++++++++++++++++++++*/
+	/*+++++++++++++++++++++++++++++KONSTRUKTOREN+++++++++++++++++++++++++++++*/
 
 	//Standardkonstruktor
 	//wird in der regel nicht aufgerufen
@@ -42,7 +42,7 @@ public class Node {
 	}
 
 
-	/*+++++++++++++++GET_METHODEN++++++++++++++++++++++*/
+	/*++++++++++++++++++++++++++++++GET-METHODEN+++++++++++++++++++++++++++++*/
 
 	public String getName(){
 		return this.name;
@@ -103,7 +103,23 @@ public class Node {
 		return value;
 	}
 	
-	/*+++++++++++++++SET_METHODEN++++++++++++++++++++++*/
+
+	/**sucht den passenden Kindknoten anhand der ID*/
+	public Node getNextNode(byte id){
+		Node current = this.nextDirectory;
+
+		while(current != null){
+			if(current.id == id){
+				return current;
+			}
+			current = current.sameDirectory;
+		}
+
+		//throw NodeNotFoundException
+		return current;
+	}
+	
+	/*++++++++++++++++++++++++++++++SET-METHODEN+++++++++++++++++++++++++++++*/
 
 	//setzt Namen des Attributs inkl. einer Nummerierung bei Doppelbelegung
 	private void setName(String name){
@@ -129,7 +145,7 @@ public class Node {
 	}
 
 
-	/*+++++++++++++++ADD_METHODE++++++++++++++++++++++*/
+	/*++++++++++++++++++++++++++++++ADD-METHODEN+++++++++++++++++++++++++++++*/
 
 	//fuegt einen Kindknoten hinzu
 	public void add(byte [] path, byte id, String name){	
@@ -148,25 +164,9 @@ public class Node {
 		this.previous = null;
 	}
 
-	/*+++++++++++++++PREVIOUS_METHODEN+++++++++++++*/
 
 
-	/*+++++++++++++++SEARCH_METHODEN+++++++++++++++++*/
 
-	//sucht den passenden Kindknoten anhand der ID
-	public Node getNextNode(byte id){
-		Node current = this.nextDirectory;
-
-		while(current != null){
-			if(current.id == id){
-				return current;
-			}
-			current = current.sameDirectory;
-		}
-
-		//throw NodeNotFoundException
-		return current;
-	}
 
 
 	/*+++++++++++++++REFRESH_METHODEN+++++++++++++++++*/
