@@ -15,22 +15,24 @@ public class Value{
 	private Value next;			//Zeiger auf den naechsten Wert
 	
 	private Node father;		//Zeiger auf Vaterknoten
-
+	
+	private byte type;
 	
 	/*+++++++++++++++Konstruktoren++++++++++++++++++++++*/
 
 	public Value(){
 
 	}
-	public Value(byte id, String name, Object value, Node father){
+	public Value(byte id, String name, Object value, Node father, byte type){
 		this.id = id;
 		this.name = name;
 		this.value = value;
 		this.father = father;
+		this.type = type;
 	}
 
-	public Value(byte id, String name, Object value, Node father, Date zeitstempel){
-		this(id, name, value, father);
+	public Value(byte id, String name, Object value, Node father, byte type, Date zeitstempel){
+		this(id, name, value, father, type);
 		this.time = zeitstempel;
 
 	}
@@ -130,21 +132,21 @@ public class Value{
 		
 		switch(type){
 		case CommunicationServiceLocal.BOOLEAN:
-			addBoolean(id, name, father);
+			addBoolean(id, name, father, type);
 		case CommunicationServiceLocal.BYTE:
-			addByte(id, name, father);
+			addByte(id, name, father, type);
 		case CommunicationServiceLocal.CHAR:
-			addChar(id, name, father);
+			addChar(id, name, father, type);
 		case CommunicationServiceLocal.DOUBLE:
-			addDouble(id, name, father);
+			addDouble(id, name, father, type);
 		case CommunicationServiceLocal.FLOAT:
-			addFloat(id, name, father);
+			addFloat(id, name, father, type);
 		case CommunicationServiceLocal.INTEGER:
-			addInteger(id, name, father);
+			addInteger(id, name, father, type);
 		case CommunicationServiceLocal.LONG:
-			addLong(id, name, father);
+			addLong(id, name, father, type);
 		case CommunicationServiceLocal.SHORT:
-			addShort(id,name, father);
+			addShort(id,name, father, type);
 		default:
 			//throw Exception...
 			
@@ -154,44 +156,44 @@ public class Value{
 	//fuer jeden Datentyp wird die enspr. Methode aufgerufen
 	//bisher nur primitve Datentypen
 	//Inittialisieru2ng muss ueberarbeitet werden
-	private void addBoolean(byte id, String name, Node father) {
+	private void addBoolean(byte id, String name, Node father, byte type) {
 		Value newValue = this;
-		newValue = new Value(id, name, new Boolean(null), father);
+		newValue = new Value(id, name, new Boolean(null), father, type);
 		
 	}
-	private void addByte(byte id, String name, Node father) {
+	private void addByte(byte id, String name, Node father, byte type) {
 		Value newValue = this;
-		newValue = new Value(id, name, new Byte(null), father);
+		newValue = new Value(id, name, new Byte(null), father, type);
 	}
 	
-	private void addChar(byte id, String name, Node father){
+	private void addChar(byte id, String name, Node father, byte type){
 		Value newValue = this;
 		char value = 0;
-		newValue = new Value(id, name, value, father);
+		newValue = new Value(id, name, value, father, type);
 	}
 	
-	private void addDouble(byte id, String name, Node father){
+	private void addDouble(byte id, String name, Node father, byte type){
 		Value newValue = this;
-		newValue = new Value(id, name, new Double(null), father);
+		newValue = new Value(id, name, new Double(null), father, type);
 	}
 	
-	private void addFloat(byte id, String name, Node father){
+	private void addFloat(byte id, String name, Node father, byte type){
 		Value newValue = this;
-		newValue = new Value(id, name, new Float(null), father);
+		newValue = new Value(id, name, new Float(null), father, type);
 	}
 	
-	private void addInteger(byte id, String name, Node father){
+	private void addInteger(byte id, String name, Node father, byte type){
 		Value newValue = this;
-		newValue = new Value(id, name, new Integer(null), father);
+		newValue = new Value(id, name, new Integer(null), father, type);
 	}
 
-	private void addLong(byte id, String name, Node father){
+	private void addLong(byte id, String name, Node father, byte type){
 		Value newValue = this;
-		newValue = new Value(id, name, new Long(null), father);
+		newValue = new Value(id, name, new Long(null), father, type);
 	}
-	private void addShort(byte id, String name, Node father){
+	private void addShort(byte id, String name, Node father, byte type){
 		Value newValue = this;
-		newValue = new Value(id, name, new Short(null), father);
+		newValue = new Value(id, name, new Short(null), father, type);
 	}
 
 }

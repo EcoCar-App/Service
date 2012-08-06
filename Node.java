@@ -91,6 +91,18 @@ public class Node {
 		return values.getLast();
 	}
 	
+	public Value getValue(byte id){
+		Value value = this.values;
+		while(value.getID() != id && value != null){
+			value = value.getNext();
+		}
+		if(value == null){
+			//throw Exception
+		}
+		
+		return value;
+	}
+	
 	/*+++++++++++++++SET_METHODEN++++++++++++++++++++++*/
 
 	//setzt Namen des Attributs inkl. einer Nummerierung bei Doppelbelegung

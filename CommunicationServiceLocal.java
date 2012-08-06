@@ -220,15 +220,21 @@ public class CommunicationServiceLocal extends Service{
 		for (int i = 0; i < depth; i++){
 			path[i] = input [i + 3];
 		}
-		byte id = input[length - 1];
-		Node currentNode = getNode(path);
-		Value current = data.getValues();
+		int dataBeginn = path.length;
+		byte id = input[path.length + 1];
+		Value value = getValue(path, id);
+		value.setValue(Arrays.copyOfRange(input, path.length + 2, input.length));
 	}
 	
 	
+	public Value getValue(byte [] path, byte id){
+		Node node = getNode(path);
+		Value value = node.getValue(id);
+		return value;
+	}
+	
 	
 	public void analyseCommand(byte [] input){
-		
 	}
 
 	//File Abholen
