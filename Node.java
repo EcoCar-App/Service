@@ -157,17 +157,7 @@ public class Node {
 		Value newValue = getLastValue();
 		newValue.add(type, id, name, this);
 	}
-	/*+++++++++++++++REMOVE_METHODE++++++++++++++++++++++*/
-
-	//entfernt den Knoten und alle Kindknoten (nicht notwendig)
-	private void remove(){
-		this.previous = null;
-	}
-
-
-
-
-
+	
 
 	/*+++++++++++++++REFRESH_METHODEN+++++++++++++++++*/
 
