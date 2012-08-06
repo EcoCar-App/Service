@@ -31,9 +31,9 @@ public class Value{
 		this.type = type;
 	}
 
-	public Value(byte id, String name, Object value, Node father, byte type, Date zeitstempel){
+	public Value(byte id, String name, Object value, Node father, byte type, Date time){
 		this(id, name, value, father, type);
-		this.time = zeitstempel;
+		this.time = time;
 
 	}
 
