@@ -3,6 +3,7 @@ package com.example.communicationservice;
 import java.util.*;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -33,7 +34,11 @@ public class CommunicationServiceLocal extends Service{
 	static final byte LONG = 16;
 	static final byte SHORT = 17;
 
-
+	
+	//InputType
+	static final byte INIT = 1;
+	static final byte DATA = 2;
+	static final byte COMMAND = 3;
 
 	
 	//Die Pfadsortierten Hashtable structure beinhaltet weitere Hashtables,
@@ -64,7 +69,7 @@ public class CommunicationServiceLocal extends Service{
 		Hashtable attribute = (Hashtable) structure.get(Arrays.toString(path));
 		return (String) attribute.get("[0]");
 	}
-	
+
 	private Node getNode(byte [] path){
 		Node current = data;
 		for(int i = 0; i < path.length; i++){
@@ -92,9 +97,8 @@ public class CommunicationServiceLocal extends Service{
 	
 	//Initialisieren der im Fahrzeug vorhandenen Daten
 
-	private void initialize(){
+	private void initialize(byte [] input){
 
-		byte[] input = collectInput().getBytes();
 		
 		try{
 			analyseHeader(Arrays.copyOfRange(input, 0, HEADER_LENGTH - 1));
@@ -104,10 +108,10 @@ public class CommunicationServiceLocal extends Service{
 		
 		
 		for(int i = HEADER_LENGTH; i < input.length; i+=input[i]){
-			if(datatype.get(input[i]) == "node"){
+			if(datatype.get(input[i+1]) == "node"){
 				initializeNode(Arrays.copyOfRange(input, i, input[i]));
 
-			}else if(datatype.get(input[i]) == "value"){
+			}else if(datatype.get(input[i+1]) == "value"){
 				initializeValue(Arrays.copyOfRange(input, i, input[i]));
 			}
 		}
@@ -182,13 +186,49 @@ public class CommunicationServiceLocal extends Service{
 	public void sendCommand(byte cmd){
 
 	}
-
-	public void analyseHeader(byte [] header){
-
+	
+	public void analyse(byte [] input){
+		byte [] header = Arrays.copyOfRange(input, 0, HEADER_LENGTH - 1);
+		byte inputType = analyseHeader(header);
+		byte [] restInput = Arrays.copyOfRange(input, HEADER_LENGTH, input.length - 1);
+		switch(inputType){
+		case INIT:
+			initialize(restInput);
+		case DATA:
+			analyseData(restInput);
+		case COMMAND:
+			analyseCommand(restInput);
+		}
+		
+	}
+	public byte analyseHeader(byte [] header){
+		return 0;
 	}
 
-	public void analyseData(){
-
+	public void analyseData(byte [] input){
+		
+		for(int i = 0; i < input.length; i += input [i]){
+			setData(Arrays.copyOfRange(input, i, input[i] - 1));
+		}
+	}
+	
+	public void setData(byte [] input){
+		byte length = input [0];
+		byte type = input[1];
+		byte depth = input [2];
+		byte [] path = new byte [depth + 1];
+		for (int i = 0; i < depth; i++){
+			path[i] = input [i + 3];
+		}
+		byte id = input[length - 1];
+		Node currentNode = getNode(path);
+		Value current = data.getValues();
+	}
+	
+	
+	
+	public void analyseCommand(byte [] input){
+		
 	}
 
 	//File Abholen
@@ -202,8 +242,4 @@ public class CommunicationServiceLocal extends Service{
 	public IBinder onBind(Intent arg0) {
 		return null;
 	}
-
-
-
-
 }

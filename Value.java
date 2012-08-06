@@ -62,12 +62,17 @@ public class Value{
 	}
 	
 	
+	/*+++++++++++++++SET_METHODEN++++++++++++++++++++++*/
+	
+	public void setValue(byte [] input){
+		
+	}
 	
 	
 	/*+++++++++++++++SEARCH_METHODEN+++++++++++++++*/
 	
 	//sucht in der Liste das passende Object zur ID
-	private Value searchValue(byte id){
+	private Value getValue(byte id){
 		Value current = this;
 		while(current != null){
 			if(current.id == id){
@@ -80,7 +85,7 @@ public class Value{
 	}
 	
 	//sucht den letzten Zeiger in der Liste
-	private Value lastPointer(){
+	public Value getLast(){
 		Value current = this;
 		while(current != null){
 			current = current.next;

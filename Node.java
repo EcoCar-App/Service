@@ -68,7 +68,7 @@ public class Node {
 	}
 
 	//gibt die naechsten freien Kindknoten zurueck
-	public Node getFreeChildNode(){
+	public Node getEmptyChildNode(){
 		Node current = this.nextDirectory;
 		while(current != null){
 			current = current.sameDirectory;
@@ -87,12 +87,10 @@ public class Node {
 	}
 
 	public Value getLastValue(){
-		Value current = values;
-		while(current != null){
-			current = current.getNext();
-		}
-		return current;
+		
+		return values.getLast();
 	}
+	
 	/*+++++++++++++++SET_METHODEN++++++++++++++++++++++*/
 
 	//setzt Namen des Attributs inkl. einer Nummerierung bei Doppelbelegung
@@ -123,8 +121,8 @@ public class Node {
 
 	//fuegt einen Kindknoten hinzu
 	public void add(byte [] path, byte id, String name){	
-		Node current = this.getFreeChildNode();
-		current = new Node(id, path, name, this);
+		Node newNode = this.getEmptyChildNode();
+		newNode = new Node(id, path, name, this);
 	}
 
 	public void addValue(byte type, byte id, String name){
@@ -133,7 +131,7 @@ public class Node {
 	}
 	/*+++++++++++++++REMOVE_METHODE++++++++++++++++++++++*/
 
-	//entfernt den Knoten und alle Kondknoten (nicht notwendig)
+	//entfernt den Knoten und alle Kindknoten (nicht notwendig)
 	private void remove(){
 		this.previous = null;
 	}
