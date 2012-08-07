@@ -1,5 +1,6 @@
 package com.example.communicationservice;
-import android.annotation.SuppressLint;
+
+import java.nio.ByteBuffer;
 import java.util.*;
 
 public class Value{
@@ -19,8 +20,6 @@ public class Value{
 
 	private Object value;		//Object in dem der entpr. Datentyp gespeichert wird
 	
-	private static Value head;	//Zeiger auf das erste Element der Liste
-
 	private Value next;			//Zeiger auf den naechsten Wert
 	
 	
@@ -72,12 +71,9 @@ public class Value{
 		return this.type;
 	}
 	
-	public Value getHead(){
-		return this.head;
-	}
 	
-	//sucht in der Liste das passende Object zur ID
-	private Value getValue(byte id){
+	
+	public Value getValue(byte id){
 		Value current = this;
 		while(current != null){
 			if(current.id == id){
@@ -89,13 +85,14 @@ public class Value{
 		return current;
 	}
 	
-	//sucht den letzten Zeiger in der Liste
 	public Value getLast(){
 		Value current = this;
+		Value last = this;
 		while(current != null){
+			last = current;
 			current = current.next;
 		}
-		return current;
+		return last;
 	}
 
 	
@@ -110,20 +107,28 @@ public class Value{
 		switch(this.type){
 		case CommunicationServiceLocal.BOOLEAN:
 			setBoolean(input);
+			break;
 		case CommunicationServiceLocal.BYTE:
 			setByte(input);
+			break;
 		case CommunicationServiceLocal.CHAR:
 			setCharacter(input);
+			break;
 		case CommunicationServiceLocal.DOUBLE:
 			setDouble(input);
+			break;
 		case CommunicationServiceLocal.FLOAT:
 			setFloat(input);
+			break;
 		case CommunicationServiceLocal.INTEGER:
 			setInteger(input);
+			break;
 		case CommunicationServiceLocal.LONG:
 			setLong(input);
+			break;
 		case CommunicationServiceLocal.SHORT:
 			setShort(input);
+			break;
 		default:
 			//throw Exception...
 		}
@@ -146,35 +151,35 @@ public class Value{
 	}
 	
 	public void setByte(byte [] input){
-		if(input.length > 1){
-			//Exception, kein Byte
-		}else{
-			this.value = input[0];
-		}
+		this.value = ByteBuffer.wrap(input).get();
 	}
 	
 	public void setCharacter(byte [] input){
-		
+		this.value = ByteBuffer.wrap(input).getChar();
 	}
 	
 	public void setDouble(byte [] input){
-		
+		this.value = ByteBuffer.wrap(input).getDouble();
 	}
 	
 	public void setFloat(byte [] input){
-		
+		this.value = ByteBuffer.wrap(input).getFloat();
 	}
 	
 	public void setInteger(byte [] input){
-		
+		this.value = ByteBuffer.wrap(input).getInt();
 	}
 	
 	public void setLong(byte [] input){
-		
+		this.value = ByteBuffer.wrap(input).getLong();
 	}
 	
 	public void setShort(byte [] input){
-		
+		this.value = ByteBuffer.wrap(input).getShort();
+	}
+	
+	public void setNext(Value next){
+		this.next = next;
 	}
 	
 	
@@ -183,15 +188,22 @@ public class Value{
 	/*+++++++++++++++++++++++++++++++++REFRESH+++++++++++++++++++++++++++++++*/
 
 	
-	//erzeugt das GET-Protokoll fuer ein Object Value
-	public Vector refresh(){
+	public Vector <Byte> refresh(){
 		
-		byte [] path = father.getPath();
+		byte [] path;
+
+		if(father != null){
+			path = father.getPath();
+		}else{
+			path = new byte[1];
+			path[0] = id;
+
+		}
 		byte depth = (byte) path.length;
-		byte command = (byte) 2; //muss noch ermittelt werden
+		byte command = (Byte) CommunicationServiceLocal.commands.get("GET");
 		byte length = (byte) (depth + (byte) 4);
 		
-		Vector commandLine = new Vector();
+		Vector<Byte> commandLine = new Vector<Byte>();
 		commandLine.add(length);
 		commandLine.add(command);
 		commandLine.add(depth);
@@ -208,26 +220,32 @@ public class Value{
 
 	//Oberste Add-Methode: ruft die entspr. Methode auf
 	public void add(byte type, byte id, String name, Node father) {
-		if(this != null){
-			//throw Exception
-		}
+		
 		switch(type){
 		case CommunicationServiceLocal.BOOLEAN:
 			addBoolean(id, name, father, type);
+			break;
 		case CommunicationServiceLocal.BYTE:
 			addByte(id, name, father, type);
+			break;
 		case CommunicationServiceLocal.CHAR:
 			addCharacter(id, name, father, type);
+			break;
 		case CommunicationServiceLocal.DOUBLE:
 			addDouble(id, name, father, type);
+			break;
 		case CommunicationServiceLocal.FLOAT:
 			addFloat(id, name, father, type);
+			break;
 		case CommunicationServiceLocal.INTEGER:
 			addInteger(id, name, father, type);
+			break;
 		case CommunicationServiceLocal.LONG:
 			addLong(id, name, father, type);
+			break;
 		case CommunicationServiceLocal.SHORT:
 			addShort(id,name, father, type);
+			break;
 		default:
 			//throw Exception...
 		}
@@ -237,42 +255,49 @@ public class Value{
 	//bisher nur primitve Datentypen
 	//Inittialisieru2ng muss ueberarbeitet werden
 	private void addBoolean(byte id, String name, Node father, byte type) {
-		Value newValue = this;
+		Value newValue = this.getValue(id);
 		newValue = new Value(id, name, new Boolean(null), father, type);
-		
+		father.newValue(newValue);
 	}
 	private void addByte(byte id, String name, Node father, byte type) {
 		Value newValue = this;
 		newValue = new Value(id, name, new Byte(null), father, type);
+		father.newValue(newValue);
 	}
 	
 	private void addCharacter(byte id, String name, Node father, byte type){
 		Value newValue = this;
 		char value = 0;
 		newValue = new Value(id, name, value, father, type);
+		father.newValue(newValue);
 	}
 	
 	private void addDouble(byte id, String name, Node father, byte type){
 		Value newValue = this;
-		newValue = new Value(id, name, new Double(null), father, type);
+		newValue = new Value(id, name, new Double(Double.NaN), father, type);
+		father.newValue(newValue);
 	}
 	
 	private void addFloat(byte id, String name, Node father, byte type){
 		Value newValue = this;
-		newValue = new Value(id, name, new Float(null), father, type);
+		newValue = new Value(id, name, new Float(Float.NaN), father, type);
+		father.newValue(newValue);
 	}
 	
 	private void addInteger(byte id, String name, Node father, byte type){
 		Value newValue = this;
 		newValue = new Value(id, name, new Integer(null), father, type);
+		father.newValue(newValue);
 	}
 
 	private void addLong(byte id, String name, Node father, byte type){
 		Value newValue = this;
 		newValue = new Value(id, name, new Long(null), father, type);
+		father.newValue(newValue);
 	}
 	private void addShort(byte id, String name, Node father, byte type){
 		Value newValue = this;
 		newValue = new Value(id, name, new Short(null), father, type);
+		father.newValue(newValue);
 	}
 }

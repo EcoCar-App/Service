@@ -242,6 +242,38 @@ public class CommunicationServiceLocal extends Service{
 
 		return "Input";
 	}
+	
+	public byte [] convertToByte(Vector command){
+		
+		command.add(new Byte((byte)2));
+		command.add(new Byte((byte)5));
+		command.add(new Byte((byte)100));
+		command.add(new Byte((byte)87));
+		
+		
+		
+		String o = command.get(0).toString();
+		System.out.println(o);
+		char [] e = o.toCharArray();
+		int h = Character.getNumericValue(e[0]);
+	
+		
+		int k = command.lastIndexOf(command.lastElement());
+		
+		byte [] feld = new byte [k+1];
+		Vector current = command;
+		Arrays.fill(feld, (byte)0);
+		for(int i = 0; i < k + 1; i++){
+			String cmdString = current.get(i).toString();
+			char [] cmdArray = cmdString.toCharArray();
+			for(int j = 0; j < cmdArray.length; j++){
+				byte cmdByte = 0;
+				cmdByte = (byte) Character.getNumericValue(cmdArray[j]);
+				feld[i] += (byte) (cmdByte *(Math.pow(10, cmdArray.length - j - 1)));
+			}
+		}
+		return feld;
+	}
 
 
 	@Override

@@ -1,4 +1,5 @@
 package com.example.communicationservice;
+
 import java.util.*;
 
 public class Node {
@@ -22,24 +23,20 @@ public class Node {
 
 	/*+++++++++++++++++++++++++++++KONSTRUKTOREN+++++++++++++++++++++++++++++*/
 
-	//Standardkonstruktor
-	//wird in der regel nicht aufgerufen
 	public Node(){
 		this(new byte [] {0}, (byte)0, "unknown", null);		
 	}
 
-	//Konstruktor Name unbekannt
-	//im Falle das der Pfad in der Hashtable fehlt
 	public Node(byte [] path, byte id, Node previous){
 		this(path, id, "unknown_component", previous);		
 	}
 
-	//Konstruktor Name bekannt, Previous wird mituebergeben
 	public Node(byte [] path, byte id, String name, Node previous){
 		this.id = id;
 		this.path = path;
 		this.previous = previous;
 		this.setName(name);
+		this.values = new Value();
 	}
 
 
@@ -57,19 +54,33 @@ public class Node {
 		return this.name;
 	}
 
-
-	//gibt die Liste der Kindknoten zurueck
-	private Node getChildList(){
+	public Node getPrevious(){
+		return this.previous;
+	}
+	
+	private Node getNextDirectory(){
 		return this.nextDirectory;
 	}
 
-	//gibt die Liste der Knoten mit gleichem Vaterknoten zurueck
-	public Node getNodeList(){
+	public Node getSameDirectory(){
 		return this.sameDirectory;
 	}
+	
+	public Node getNextNode(byte id){
+		Node current = this.getNextDirectory();
 
-	//gibt die naechsten freien Kindknoten zurueck
-	public Node getEmptyChildNode(){
+		while(current != null){
+			if(current.id == id){
+				return current;
+			}
+			current = current.sameDirectory;
+		}
+
+		//throw NodeNotFoundException
+		return current;
+	}
+
+	public Node getEmptyNode(){
 		Node current = this.nextDirectory;
 		while(current != null){
 			current = current.sameDirectory;
@@ -77,17 +88,11 @@ public class Node {
 		return current;
 	}
 
-	//gibt den Vaterknoten zurueck
-	public Node getPrevious(){
-		return this.previous;
-	}
-
-	//gibt die Liste der Werte zurueck
-	public Value getValues(){
+		public Value getValues(){
 		return this.values;
 	}
 
-	public Value getLastValue(){
+	public Value getEmptyValue(){
 		
 		return values.getLast();
 	}
@@ -100,40 +105,24 @@ public class Node {
 		if(value == null){
 			//throw Exception
 		}
-		
 		return value;
 	}
 	
 
-	/**sucht den passenden Kindknoten anhand der ID*/
-	public Node getNextNode(byte id){
-		Node current = this.nextDirectory;
-
-		while(current != null){
-			if(current.id == id){
-				return current;
-			}
-			current = current.sameDirectory;
-		}
-
-		//throw NodeNotFoundException
-		return current;
-	}
+	
 	
 	/*++++++++++++++++++++++++++++++SET-METHODEN+++++++++++++++++++++++++++++*/
 
-	//setzt Namen des Attributs inkl. einer Nummerierung bei Doppelbelegung
 	private void setName(String name){
 		int counter = 2;
-		while(previous.nameExist(name)){
+		while(this.previous != null && previous.existName(name)){
 			name += counter;
 			counter++;
 		}
 		this.name = name;
 	}
 
-	//ueberprueft, ob der Name in der Directory schon vorhanden ist
-	private boolean nameExist(String name){
+	private boolean existName(String name){
 		Node current = previous.nextDirectory;
 
 		while(current.sameDirectory != null){
@@ -148,48 +137,55 @@ public class Node {
 	public void setValue(byte id, byte [] input){
 		this.getValue(id).setValue(input);
 	}
+	
+	
 
 
 	/*++++++++++++++++++++++++++++++ADD-METHODEN+++++++++++++++++++++++++++++*/
 
-	//fuegt einen Kindknoten hinzu
 	public void add(byte [] path, byte id, String name){	
-		Node newNode = this.getEmptyChildNode();
+		Node newNode = this.getEmptyNode();
+		
 		newNode = new Node(path, id, name, this);
+		
+		if(root == null){
+			root = newNode;
+		}
 	}
 
 	public void addValue(byte type, byte id, String name){
-		Value newValue = getLastValue();
-		newValue.add(type, id, name, this);
+		values.add(type, id, name, this);
+	}
+	
+	public void newValue(Value value){
+		values.getLast().setNext(value);
 	}
 	
 
 	/*+++++++++++++++REFRESH_METHODEN+++++++++++++++++*/
 
-	//TODO: saemtliche Values des aktuellen und der UnterKnoten werden rekursiv aktuallisiert
-	//Das Feld mit pfad und Befehl wird zurückgegeben
-	public Vector refresh(){
+	public Vector<Byte> refresh(){
 		Value currentValue = values;
 		
-		Vector commandSet = new Vector();
+		Vector <Byte> commandSet = new Vector <Byte>();
 		
 		while(currentValue != null){
-			commandSet.add(refresh(currentValue));
+			commandSet.addAll(refresh(currentValue));
 			currentValue = currentValue.getNext();
 		}
-		commandSet.add(refresh(this));
-		return null;
+		commandSet.addAll(refresh(this));
+		return commandSet;
 	}
 	
-	private Vector refresh(Value value){
+	private Vector <Byte> refresh(Value value){
 		return value.refresh();
 	}
 
-	private Vector refresh(Node node){
+	private Vector <Byte> refresh(Node node){
 		Node current = node.nextDirectory;
-		Vector commandLine = new Vector();
+		Vector <Byte> commandLine = new Vector <Byte> ();
 		while(current != null){
-			commandLine.add(current.refresh());
+			commandLine.addAll(current.refresh());
 			current = current.sameDirectory;
 		}
 		return commandLine;
