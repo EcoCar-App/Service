@@ -286,18 +286,18 @@ public class Value{
 	
 	private void addInteger(byte id, String name, Node father, byte type){
 		Value newValue = this;
-		newValue = new Value(id, name, new Integer(null), father, type);
+		newValue = new Value(id, name, new Integer(0), father, type);
 		father.newValue(newValue);
 	}
 
 	private void addLong(byte id, String name, Node father, byte type){
 		Value newValue = this;
-		newValue = new Value(id, name, new Long(null), father, type);
+		newValue = new Value(id, name, new Long(0), father, type);
 		father.newValue(newValue);
 	}
 	private void addShort(byte id, String name, Node father, byte type){
 		Value newValue = this;
-		newValue = new Value(id, name, new Short(null), father, type);
+		newValue = new Value(id, name, new Short((short)0), father, type);
 		father.newValue(newValue);
 	}
 }

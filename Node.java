@@ -3,7 +3,7 @@ package com.example.communicationservice;
 import java.util.*;
 
 public class Node {
-	
+
 	private byte [] path;			//Pfad im Baum
 
 	private byte id;				//Zugehoerige Byte der Komponente
@@ -17,7 +17,7 @@ public class Node {
 	private Node sameDirectory;		//Zeiger auf Knoten der selben Ebene
 
 	private Value values;			//Zeiger auf Liste an Values
-									//evtl auch als Hashtable moeglich: unklar
+	//evtl auch als Hashtable moeglich: unklar
 	private static Node root;		//Wurzel des Datenbaums
 
 
@@ -45,11 +45,11 @@ public class Node {
 	public byte [] getPath(){
 		return this.path.clone();
 	}
-	
+
 	public byte getID(){
 		return this.id;
 	}
-	
+
 	public String getName(){
 		return this.name;
 	}
@@ -57,7 +57,7 @@ public class Node {
 	public Node getPrevious(){
 		return this.previous;
 	}
-	
+
 	private Node getNextDirectory(){
 		return this.nextDirectory;
 	}
@@ -65,7 +65,7 @@ public class Node {
 	public Node getSameDirectory(){
 		return this.sameDirectory;
 	}
-	
+
 	public Node getNextNode(byte id){
 		Node current = this.getNextDirectory();
 
@@ -88,15 +88,15 @@ public class Node {
 		return current;
 	}
 
-		public Value getValues(){
+	public Value getValues(){
 		return this.values;
 	}
 
 	public Value getEmptyValue(){
-		
+
 		return values.getLast();
 	}
-	
+
 	public Value getValue(byte id){
 		Value value = this.values;
 		while(value.getID() != id && value != null){
@@ -107,10 +107,10 @@ public class Node {
 		}
 		return value;
 	}
-	
 
-	
-	
+
+
+
 	/*++++++++++++++++++++++++++++++SET-METHODEN+++++++++++++++++++++++++++++*/
 
 	private void setName(String name){
@@ -133,21 +133,21 @@ public class Node {
 		}
 		return false;
 	}
-	
+
 	public void setValue(byte id, byte [] input){
 		this.getValue(id).setValue(input);
 	}
-	
-	
+
+
 
 
 	/*++++++++++++++++++++++++++++++ADD-METHODEN+++++++++++++++++++++++++++++*/
 
 	public void add(byte [] path, byte id, String name){	
 		Node newNode = this.getEmptyNode();
-		
+
 		newNode = new Node(path, id, name, this);
-		
+
 		if(root == null){
 			root = newNode;
 		}
@@ -156,19 +156,24 @@ public class Node {
 	public void addValue(byte type, byte id, String name){
 		values.add(type, id, name, this);
 	}
-	
+
 	public void newValue(Value value){
-		values.getLast().setNext(value);
-	}
-	
+		//muss eleganter geloest werden!
+		if(this.values.getValue() == null){
+			this.values = value;
+			System.out.println("true");
+		}else{
+			values.getLast().setNext(value);
+		}	}
+
 
 	/*+++++++++++++++REFRESH_METHODEN+++++++++++++++++*/
 
 	public Vector<Byte> refresh(){
 		Value currentValue = values;
-		
+
 		Vector <Byte> commandSet = new Vector <Byte>();
-		
+
 		while(currentValue != null){
 			commandSet.addAll(refresh(currentValue));
 			currentValue = currentValue.getNext();
@@ -176,7 +181,7 @@ public class Node {
 		commandSet.addAll(refresh(this));
 		return commandSet;
 	}
-	
+
 	private Vector <Byte> refresh(Value value){
 		return value.refresh();
 	}
